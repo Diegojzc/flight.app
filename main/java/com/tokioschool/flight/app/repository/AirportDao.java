@@ -1,7 +1,6 @@
 package com.tokioschool.flight.app.repository;
 
 
-import com.tokioschool.flight.app.domain.Airport;
 
 import com.tokioschool.flight.app.Entities.Airport;
 
