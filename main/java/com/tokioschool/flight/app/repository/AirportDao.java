@@ -2,7 +2,7 @@ package com.tokioschool.flight.app.repository;
 
 
 
-import com.tokioschool.flight.app.Entities.Airport;
+import com.tokioschool.flight.app.domain.Airport;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
