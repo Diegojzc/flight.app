@@ -1,0 +1,13 @@
+package com.tokioschool.flight.app.repository;
+
+import com.tokioschool.flight.app.domain.Role;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface RoleDAO extends CrudRepository<Role, Long> {
+
+}

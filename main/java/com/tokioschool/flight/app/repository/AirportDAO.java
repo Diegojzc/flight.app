@@ -1,13 +1,14 @@
 package com.tokioschool.flight.app.repository;
 
-
-
 import com.tokioschool.flight.app.domain.Airport;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.Optional;
 
-public interface AirportDao extends JpaRepository<Airport,String> {
+@Repository
+public interface AirportDAO extends JpaRepository<Airport, String> {
+
+    Optional<Airport> findByAcronym(String acronym);
 }
+
