@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface RoleDAO extends CrudRepository<Role, Long> {
 
+
 }

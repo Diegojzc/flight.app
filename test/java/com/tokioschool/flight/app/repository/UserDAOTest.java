@@ -3,17 +3,19 @@ package com.tokioschool.flight.app.repository;
 import com.tokioschool.flight.app.domain.Role;
 import com.tokioschool.flight.app.domain.User;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 @DataJpaTest(
         properties = {
@@ -21,12 +23,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
                 "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect",
                 "spring.jpa.hibernate.ddl-auto:create-drop"
         })
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 class UserDAOTest {
 
         @Autowired
         private UserDAO userDao;
         @Autowired
         private RoleDAO roleDAO;
+        @Autowired
+        private TransactionTemplate transactionTemplate;
 
         @BeforeEach
         void beforeEach(){
@@ -55,22 +60,30 @@ class UserDAOTest {
 
         }
 
+        @AfterEach
+        void afterEach(){
+                userDao.deleteAll();;
+                roleDAO.deleteAll();
+        }
+
         @Test
         void givenTwoUsers_whenFindAll_thenReturnOk(){
-                List<User> users= userDao.findAll();
-                assertThat(users).hasSize(2);
+                transactionTemplate.executeWithoutResult(
+                        transactionStatus ->{
+                        List<User> users= userDao.findAll();
+                        assertThat(users).hasSize(2);
 
-                assertThat(
-                        users.stream()
-                        .filter(user-> user.getEmail().equals("user1@gmail.com"))
-                        .findFirst()
-                        .get())
-                        .returns("name1",User::getName)
-                        .satisfies(user-> assertThat(user.getCreated()).isNotNull())
-                        .satisfies(user-> assertThat(user.getId()).isNotNull())
-                        .satisfies(user-> assertThat(user.getRoles().stream().map(Role:: getName).toList())
-                                .containsExactlyInAnyOrder("role1","role2"));
-
+                        assertThat(
+                                users.stream()
+                                        .filter(user-> user.getEmail().equals("user1@gmail.com"))
+                                        .findFirst()
+                                        .get())
+                                .returns("name1",User::getName)
+                                .satisfies(user-> assertThat(user.getCreated()).isNotNull())
+                                .satisfies(user-> assertThat(user.getId()).isNotNull())
+                                .satisfies(user-> assertThat(user.getRoles().stream().map(Role:: getName).toList())
+                                        .containsExactlyInAnyOrder("role1","role2"));
+                });
 
 
         }
@@ -83,5 +96,7 @@ class UserDAOTest {
                 List<User> users = userDao.findAll();
                 assertThat(users).hasSize(1);
         }
+
+
 
 }

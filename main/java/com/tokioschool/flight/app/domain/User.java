@@ -26,7 +26,7 @@ public class User {
   private String password;
   private LocalDateTime lastLogin;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "users_with_roles",
       joinColumns = @JoinColumn(name = "user_id"),
