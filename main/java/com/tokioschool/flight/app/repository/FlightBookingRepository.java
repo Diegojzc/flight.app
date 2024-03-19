@@ -5,4 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FlightBookingDAO extends JpaRepository<FlightBooking,Long> {}
+public interface FlightBookingRepository extends JpaRepository<FlightBooking,Long> {}

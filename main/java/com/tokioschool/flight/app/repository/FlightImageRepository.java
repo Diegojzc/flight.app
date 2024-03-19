@@ -1,14 +1,10 @@
 package com.tokioschool.flight.app.repository;
 
-import com.tokioschool.flight.app.domain.Role;
+import com.tokioschool.flight.app.domain.FlightImage;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-
 @Repository
-public interface RoleDAO extends CrudRepository<Role, Long> {
-
+public interface FlightImageRepository extends CrudRepository<FlightImage, Long> {
 
 }

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface FlightDAO extends JpaRepository<Flight, Long> {
+public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     List<Flight> findByDepartureAcronym(String departureAcronym);
 

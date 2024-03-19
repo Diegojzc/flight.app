@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.assertj.core.api.*;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -25,14 +25,14 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
                 "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect",
                 "spring.jpa.hibernate.ddl-auto:create-drop"
         })
-class FlightDAOTest {
+class FlightRepositoryTest {
 
     @Autowired
-    private FlightImageDAO flightImageDAO;
+    private FlightImageRepository flightImageRepository;
     @Autowired
-    private FlightDAO flightDAO;
+    private FlightRepository flightRepository;
     @Autowired
-    private AirportDAO airportDAO;
+    private AirportRepository airportRepository;
 
     @BeforeEach
 void beforeEach(){
@@ -47,8 +47,8 @@ void beforeEach(){
                 .country("United Kingdom")
                 .build();
 
-    airportDAO.save(bcn);
-    airportDAO.save(gla);
+    airportRepository.save(bcn);
+    airportRepository.save(gla);
 
     Flight flight1 = Flight.builder().occupancy(0)
                 .capacity(90)
@@ -90,7 +90,7 @@ void beforeEach(){
                 .bookings(new HashSet<>())
                 .build();
 
-        flightDAO.saveAll(List.of(flight1,flight2,flight3));
+        flightRepository.saveAll(List.of(flight1,flight2,flight3));
 
 
 }
@@ -98,10 +98,10 @@ void beforeEach(){
 @Test
     void givenFlights_whenFindByDeparture_thenOk(){
 
-        List<Flight> flightBcn =flightDAO.findByDepartureAcronym("BCN");
+        List<Flight> flightBcn = flightRepository.findByDepartureAcronym("BCN");
     Assertions.assertEquals(3, flightBcn.size());
 
-    List<Flight> flightGla = flightDAO.findByDepartureAcronym("GLA");
+    List<Flight> flightGla = flightRepository.findByDepartureAcronym("GLA");
     Assertions.assertEquals(0, flightGla.size());
 
 
@@ -109,13 +109,13 @@ void beforeEach(){
 
 @Test
       void givenFlight_whenFindNextFlights_thenOk(){
-        List<Flight> flights= flightDAO.findByDepartureTimeIsAfterAndStatusIs(LocalDateTime.now(), FlightStatus.SCHEDULED);
+        List<Flight> flights= flightRepository.findByDepartureTimeIsAfterAndStatusIs(LocalDateTime.now(), FlightStatus.SCHEDULED);
         Assertions.assertEquals(2, flights.size());
         Assertions.assertNotNull(flights.get(0).getImage());
 }
     @Test
     void givenFlights_whenFindDepartureCounters_then0k(){
-        List<FlightCounterByAirport> flightCounterByAirport = flightDAO.getFlightCounterByDepartureAirport();
+        List<FlightCounterByAirport> flightCounterByAirport = flightRepository.getFlightCounterByDepartureAirport();
         assertThat(flightCounterByAirport).hasSize(1);
         assertThat(flightCounterByAirport.get (0))
                 .returns( 3L, FlightCounterByAirport::getCounter)

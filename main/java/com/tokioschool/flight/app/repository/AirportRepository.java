@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AirportDAO extends JpaRepository<Airport, String> {
+public interface AirportRepository extends JpaRepository<Airport, String> {
 
     Optional<Airport> findByAcronym(String acronym);
 }

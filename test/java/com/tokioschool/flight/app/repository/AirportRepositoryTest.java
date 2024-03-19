@@ -17,9 +17,9 @@ import java.util.Optional;
       "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect",
       "spring.jpa.hibernate.ddl-auto:create-drop"
     })
-class AirportDaoTest {
+class AirportRepositoryTest {
 
-  @Autowired private AirportDAO airportDao;
+  @Autowired private AirportRepository airportDao;
 
   @BeforeEach
   public void BeforeEach() {

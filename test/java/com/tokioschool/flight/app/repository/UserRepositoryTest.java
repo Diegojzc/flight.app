@@ -2,7 +2,6 @@ package com.tokioschool.flight.app.repository;
 
 import com.tokioschool.flight.app.domain.Role;
 import com.tokioschool.flight.app.domain.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,12 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
                 "spring.jpa.hibernate.ddl-auto:create-drop"
         })
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-class UserDAOTest {
+class UserRepositoryTest {
 
         @Autowired
-        private UserDAO userDao;
+        private UserRepository userDao;
         @Autowired
-        private RoleDAO roleDAO;
+        private RoleRepository roleDAO;
         @Autowired
         private TransactionTemplate transactionTemplate;
 
