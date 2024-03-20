@@ -62,7 +62,7 @@ public class FlightServiceImpl implements FlightService {
         return modelMapper.map(flight,FlightDTO.class);
     }
 
-    private Flight createdOrEdit(Flight flight, FlightMvcDTO flightMvcDTO, MultipartFile multipartFile) {
+    protected Flight createdOrEdit(Flight flight, FlightMvcDTO flightMvcDTO, MultipartFile multipartFile) {
 
         Airport departure = getAirport(flightMvcDTO.getDeparture());
         Airport arrival = getAirport(flightMvcDTO.getArrival());

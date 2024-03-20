@@ -9,9 +9,10 @@ import io.micrometer.common.lang.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,7 @@ public class FlightController {
         return modelAndView;
 
     }
-    @GetMapping({"/flight/Flights-edit", "/flight/flights-edit/{flightId}"})
+    @GetMapping({"/flight/flights-edit", "/flight/flights-edit/{flightId}"})
     public ModelAndView createOrEditFlight(@PathVariable(name = "flightId", required = false) Long flightId, Model model){
 
         Optional<FlightDTO> maybeFlightDTO = Optional.ofNullable(flightId).map(flightService::getFlight);
@@ -51,10 +52,25 @@ public class FlightController {
                 .orElseGet(FlightMvcDTO::new);
         ModelAndView modelAndView =
         populateCreate0rEditFlightModel(flIghtMvcDTO,maybeFlightDTO.orElse(null),model);
-        modelAndView.setViewName("/flight/flights/flight-edit");
+        modelAndView.setViewName("/flight/flights/flights-edit");
         return modelAndView;
 
     }
+
+    @PostMapping({"/flight/flights-edit", "/flight/flights-edit/", "/flight/flights-edit/{flightId}"})
+    public RedirectView createdOrEditFlightPost(@ModelAttribute("flight") FlightMvcDTO flightMvcDTO,
+                                                @RequestParam("image")MultipartFile multipartFile,
+                                                @PathVariable(name="flightId", required = false) Long flightId,
+                                                Model model){
+
+        Optional.ofNullable(flightMvcDTO.getId())
+                .map(o-> flightService.editFlight(flightMvcDTO, multipartFile))
+                .orElseGet(()->flightService.createFlight(flightMvcDTO,multipartFile));
+
+        return new RedirectView("/flight/flights");
+
+    }
+
     private ModelAndView populateCreate0rEditFlightModel( FlightMvcDTO flightMvcDTO, @Nullable FlightDTO flightDTO, Model model) {
 
         List<AirportDTO> airports = airportService.getAirports();
