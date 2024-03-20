@@ -3,6 +3,7 @@ package com.tokioschool.flight.app.Controller;
 import com.tokioschool.flight.app.dto.AirportDTO;
 import com.tokioschool.flight.app.dto.FlightMvcDTO;
 import com.tokioschool.flight.app.dto.FlightDTO;
+import com.tokioschool.flight.app.dto.ResourceDTO;
 import com.tokioschool.flight.app.service.AirportService;
 import com.tokioschool.flight.app.service.FlightService;
 import io.micrometer.common.lang.Nullable;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -71,13 +73,18 @@ public class FlightController {
 
     }
 
-    private ModelAndView populateCreate0rEditFlightModel( FlightMvcDTO flightMvcDTO, @Nullable FlightDTO flightDTO, Model model) {
+    private ModelAndView populateCreate0rEditFlightModel(FlightMvcDTO flightMvcDTO, @Nullable FlightDTO flightDTO, Model model) {
 
         List<AirportDTO> airports = airportService.getAirports();
+        UUID imageId= Optional.ofNullable(flightDTO)
+                .map(FlightDTO::getImage)
+                .map(ResourceDTO::getResourceId)
+                .orElse(null);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addAllObjects(model.asMap());
         modelAndView.addObject (  "flight", flightMvcDTO);
         modelAndView.addObject ( "airports", airports);
+        modelAndView.addObject("flightImageResourceId", imageId);
         return modelAndView;
 }
 }

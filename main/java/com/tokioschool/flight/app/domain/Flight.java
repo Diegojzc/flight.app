@@ -49,7 +49,7 @@ public class Flight {
     private Set<FlightBooking> bookings;
 
     @OneToOne(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name= "fight_image_id",referencedColumnName = "id")
+    @JoinColumn(name= "flight_image_id",referencedColumnName = "id")
     private FlightImage image;
 
 

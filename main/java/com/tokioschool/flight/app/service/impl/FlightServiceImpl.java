@@ -2,11 +2,13 @@ package com.tokioschool.flight.app.service.impl;
 
 import com.tokioschool.flight.app.domain.Airport;
 import com.tokioschool.flight.app.domain.Flight;
+import com.tokioschool.flight.app.domain.FlightImage;
 import com.tokioschool.flight.app.domain.FlightStatus;
 import com.tokioschool.flight.app.dto.FlightMvcDTO;
 import com.tokioschool.flight.app.dto.FlightDTO;
 import com.tokioschool.flight.app.repository.AirportRepository;
 import com.tokioschool.flight.app.repository.FlightRepository;
+import com.tokioschool.flight.app.service.FlightImageService;
 import com.tokioschool.flight.app.service.FlightService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
     private final ModelMapper modelMapper;
     private final AirportRepository airportRepository;
+    private final FlightImageService flightImageService;
 
 
     @Override
@@ -67,13 +70,20 @@ public class FlightServiceImpl implements FlightService {
         Airport departure = getAirport(flightMvcDTO.getDeparture());
         Airport arrival = getAirport(flightMvcDTO.getArrival());
 
+         FlightImage flightImage =flight.getImage();
+
+        if (!multipartFile.isEmpty()){
+            flightImage= flightImageService.saveImage(multipartFile);
+            flightImage.setFlight(flight);
+        }
+
         flight.setCapacity(flightMvcDTO.getCapacity());
         flight.setArrival(arrival);
         flight.setDeparture(departure);
         flight.setStatus(FlightStatus.valueOf(flightMvcDTO.getStatus()));
         flight.setNumber(flightMvcDTO.getNumber());
         flight.setDepartureTime(flightMvcDTO.getDayTime());
-        flight.setImage(null);
+        flight.setImage(flightImage);
         return flightRepository.save(flight);
 
     }

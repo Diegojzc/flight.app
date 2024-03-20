@@ -8,6 +8,5 @@ import java.util.UUID;
 @Value
 @Builder
 public class ResourceIdDTO {
-
     UUID resourceId;
 }
