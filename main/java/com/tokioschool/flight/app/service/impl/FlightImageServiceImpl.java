@@ -22,7 +22,7 @@ public class FlightImageServiceImpl implements FlightImageService {
   public FlightImage saveImage(MultipartFile multipartFile) {
     ResourceIdDTO resourceIdDTO =
         storeService
-            .saveResource(multipartFile, "flight-app")
+            .saveResource(multipartFile, "app")
             .orElseThrow(() -> new IllegalStateException("Resource not saved in store"));
 
     return FlightImage.builder()

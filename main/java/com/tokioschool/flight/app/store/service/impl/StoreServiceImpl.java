@@ -99,6 +99,7 @@ public class StoreServiceImpl implements StoreService {
     Path pathFromDescription = storeConfigurationProperties.getPath(resourceId + ".json");
      try{
        Files.delete(pathFromContent);
+       Files.delete(pathFromDescription);
      }catch (IOException e){
 
      }

@@ -1,4 +1,4 @@
-package com.tokioschool.flight.app.Controller;
+package com.tokioschool.flight.app.controller;
 
 import com.tokioschool.flight.app.dto.FlightImageResourceDTO;
 import com.tokioschool.flight.app.service.FlightImageService;
@@ -32,7 +32,9 @@ public class FlightResourceController {
         FlightImageResourceDTO flightImageResourceDTO = flightImageService.getImage(resourceId);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + flightImageResourceDTO.getFilename());
+        httpHeaders.add(HttpHeaders.CONTENT_TYPE, flightImageResourceDTO.getContentType());
         httpHeaders.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(flightImageResourceDTO.getSize()));
+
         return  ResponseEntity.ok().headers(httpHeaders).body(flightImageResourceDTO.getContent());
     }
 }

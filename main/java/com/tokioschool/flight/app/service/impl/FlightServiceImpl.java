@@ -48,7 +48,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    @Transactional
+
     public FlightDTO createFlight(FlightMvcDTO flightMvcDTO, @Nullable MultipartFile multipartFile) {
 
         Flight flight = createdOrEdit(new Flight(), flightMvcDTO,multipartFile);
@@ -56,7 +56,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    @Transactional
+
     public FlightDTO editFlight(FlightMvcDTO flightMvcDTO, @Nullable MultipartFile multipartFile) {
          Flight flight = flightRepository
                  .findById(flightMvcDTO.getId())
@@ -65,7 +65,7 @@ public class FlightServiceImpl implements FlightService {
         return modelMapper.map(flight,FlightDTO.class);
     }
 
-    protected Flight createdOrEdit(Flight flight, FlightMvcDTO flightMvcDTO, MultipartFile multipartFile) {
+    public Flight createdOrEdit(Flight flight, FlightMvcDTO flightMvcDTO, MultipartFile multipartFile) {
 
         Airport departure = getAirport(flightMvcDTO.getDeparture());
         Airport arrival = getAirport(flightMvcDTO.getArrival());
