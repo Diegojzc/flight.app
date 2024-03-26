@@ -4,7 +4,6 @@ import com.tokioschool.flight.app.domain.Flight;
 import com.tokioschool.flight.app.domain.FlightBooking;
 import com.tokioschool.flight.app.domain.User;
 import com.tokioschool.flight.app.dto.FlightBookingDTO;
-import com.tokioschool.flight.app.dto.FlightDTO;
 import com.tokioschool.flight.app.repository.FlightRepository;
 import com.tokioschool.flight.app.repository.UserRepository;
 import com.tokioschool.flight.app.service.FlightBookingService;
@@ -21,7 +20,7 @@ public class FlightBookingServiceImpl implements FlightBookingService {
 
     private final FlightRepository flightRepository;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapoer;
+    private final ModelMapper modelMapper;
     @Override
     @Transactional
     public FlightBookingDTO bookFlight(Long flightId, String userId) {
@@ -46,7 +45,7 @@ public class FlightBookingServiceImpl implements FlightBookingService {
 
        flightRepository.save(flight);
 
-        return modelMapoer.map(flightBooking, FlightBookingDTO.class);
+        return modelMapper.map(flightBooking, FlightBookingDTO.class);
 
     }
 }
