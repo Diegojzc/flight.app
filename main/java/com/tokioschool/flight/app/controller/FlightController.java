@@ -6,13 +6,20 @@ import com.tokioschool.flight.app.dto.FlightDTO;
 import com.tokioschool.flight.app.dto.ResourceDTO;
 import com.tokioschool.flight.app.service.AirportService;
 import com.tokioschool.flight.app.service.FlightService;
+import com.tokioschool.flight.app.validator.FlightMvcDTOValidator;
 import io.micrometer.common.lang.Nullable;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.internal.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
@@ -25,6 +32,11 @@ public class FlightController {
 
   private final FlightService flightService;
   private final AirportService airportService;
+  private final FlightMvcDTOValidator flightMvcDTOValidator;
+  @InitBinder
+  private void initBinder(WebDataBinder webDataBinder){
+    webDataBinder.setValidator(flightMvcDTOValidator);
+  }
 
   @GetMapping("/flight/flights")
   public ModelAndView getFlights() {
@@ -63,19 +75,33 @@ public class FlightController {
     return modelAndView;
   }
 
+
+
   @PostMapping({"/flight/flights-edit", "/flight/flights-edit/", "/flight/flights-edit/{flightId}"})
-  public RedirectView createdOrEditFlightPost(
-      @ModelAttribute("flight") FlightMvcDTO flightMvcDTO,
-      @RequestParam("image") MultipartFile multipartFile,
-      @PathVariable(name = "flightId", required = false) Long flightId,
-      Model model) {
+  public ModelAndView createdOrEditFlightPost(
+          @ModelAttribute("flight") @Valid FlightMvcDTO flightMvcDTO,
+          BindingResult bindingResult,
+          @RequestParam("image") MultipartFile multipartFile,
+          @PathVariable(name = "flightId", required = false) Long flightId,
+          Model model, RedirectAttributes redirectAttributes) {
+
+    if (bindingResult.hasErrors()) {
+      Optional<FlightDTO> maybeFlightDTO = Optional.ofNullable(flightId).map(flightService::getFlight);
+
+      ModelAndView modelAndView = populateCreate0rEditFlightModel(flightMvcDTO, maybeFlightDTO.orElse(null), model);
+      modelAndView.setViewName("flight/flights/flights-edit");
+
+      return modelAndView;
+    }
 
     Optional.ofNullable(flightMvcDTO.getId())
         .map(o -> flightService.editFlight(flightMvcDTO, multipartFile))
         .orElseGet(() -> flightService.createFlight(flightMvcDTO, multipartFile));
 
-    return new RedirectView("/flight/flights");
+    return new ModelAndView("redirect:/flight/flights");
   }
+
+
 
   private ModelAndView populateCreate0rEditFlightModel(
       FlightMvcDTO flightMvcDTO, @Nullable FlightDTO flightDTO, Model model) {
