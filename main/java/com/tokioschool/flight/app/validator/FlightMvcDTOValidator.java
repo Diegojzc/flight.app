@@ -11,29 +11,29 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 @RequiredArgsConstructor
 public class FlightMvcDTOValidator implements Validator {
 
-    private final LocalValidatorFactoryBean localValidatorFactoryBean;
-    @Override
-    public boolean supports(Class<?> clazz) {
+  private final LocalValidatorFactoryBean localValidatorFactoryBean;
+
+  @Override
+  public boolean supports(Class<?> clazz) {
     return localValidatorFactoryBean.supports(clazz);
+  }
+
+  @Override
+  public void validate(Object target, Errors errors) {
+
+    localValidatorFactoryBean.validate(target, errors);
+    if (errors.hasErrors()) {
+      return;
     }
-
-    @Override
-    public void validate(Object target, Errors errors) {
-
-        localValidatorFactoryBean.validate(target, errors);
-        if (errors.hasErrors()){
-            return;
-        }
-        if(!(target instanceof FlightMvcDTO flightMvcDTO)){
-            return;
-        }
-        if(flightMvcDTO.getDeparture().equals(flightMvcDTO.getArrival())){
-
-            errors.rejectValue(
-                    "arrival",
-                    "validation.flight.arrival_equals_departure",
-                    "arrival cannot be the same as departure"
-                    );
-        }
+    if (!(target instanceof FlightMvcDTO flightMvcDTO)) {
+      return;
     }
+    if (flightMvcDTO.getDeparture().equals(flightMvcDTO.getArrival())) {
+
+      errors.rejectValue(
+          "arrival",
+          "validation.flight.arrival_equals_departure",
+          "arrival cannot be the same as departure");
+    }
+  }
 }
