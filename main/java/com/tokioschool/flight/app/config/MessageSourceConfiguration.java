@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 public class MessageSourceConfiguration {
     @Bean
-
     public MessageSource messageSource(){
     ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
     messageSource.setBasenames("messages/messages", "org.hibernate.validator.ValidationMessages");

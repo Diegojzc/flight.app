@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class FlightMvcDTO {
 
     private Long id;
-    @NotBlank(message="{validation.flight.number_empty}")
+    @NotBlank
     private String number;
 
     @NotBlank
