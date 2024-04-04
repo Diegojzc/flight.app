@@ -34,8 +34,8 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{''(lang='es')}" th:if="${#locale.language == 'en'}">Español</a>
-                    <a class="nav-link" href="#" th:href="@{''(lang='en')}" th:if="${#locale.language == 'es'}">English</a>
+                    <a class="nav-link" href="#" th:href="@{''(lang='es')}" th:if="${#locale.language=='en'}">Español</a>
+                    <a class="nav-link" href="#" th:href="@{''(lang='en')}" th:if="${#locale.language=='es'}">English</a>
                 </li>
             </ul>
         </div>

@@ -23,7 +23,7 @@ flight_id bigint(20) unsigned not null comment 'flight id fk' references flights
 primary key (id)
 );
 
-create table flights_ with_users
+create table flights_with_users
 (
 id bigint(20) unsigned not null auto_increment,
 created datetime not null comment 'creation date',

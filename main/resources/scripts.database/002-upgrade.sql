@@ -21,9 +21,10 @@ create table users
     user_id varchar(13) not null references users (id),
     role_id bigint (20) unsigned not null references roles(id)
     );
+
     insert into users (id, created, name, surname,email,password)
     values('OAYZDSFS4534534', now(), 'user-name', 'user@gmail.com',
-    '$2a$12$LaUrLPytkEom5m6ZGn/PJ.vUCl4Dgnzsv9TQ600H2YDqOpJhcazr2'),
+    '12345678'),
     ('OAYZDhusfhus324', now(), 'admin-name', 'adminr@gmail.com',
         '$2a$12$rYw0FXGrtJR8KpW/btwxbeuCY77fXHCyUT.EhxFDzDzlJYaLumFtS'
     );
