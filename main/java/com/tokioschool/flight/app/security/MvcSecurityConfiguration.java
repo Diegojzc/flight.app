@@ -9,19 +9,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class MvcSecurityConfiguration {
 
-  @Bean
-  public SecurityFilterChain configureMvcSecurity(HttpSecurity httpSecurity) throws Exception {
-    return httpSecurity
-        .securityMatcher("/flight/**", "/login", "/logout")
-        .authorizeHttpRequests(
-            authorizeHttpRequets ->
-                authorizeHttpRequets
-                    .requestMatchers("/login", "/logout", "/flight/my-error")
-                    .permitAll()
-                    .requestMatchers("/flight/**")
-                    .authenticated())
-        .formLogin(Customizer.withDefaults())
-        .logout(Customizer.withDefaults())
-        .build();
-  }
+    @Bean
+    public SecurityFilterChain configureMvcSecurity(HttpSecurity httpSecurity) throws Exception{
+        return httpSecurity
+                .securityMatcher("/flight/**", "/login", "/logout")
+                .authorizeHttpRequests(authorizeRequests->
+                        authorizeRequests
+                                .requestMatchers("/login", "/logout","/flight/my-error")
+                                .permitAll()
+                                .requestMatchers("/flight/flights-edit")
+                                .hasAuthority("ADMIN")
+                                .requestMatchers("/flight/**")
+                                .authenticated())
+                .formLogin(Customizer.withDefaults())
+                .logout(Customizer.withDefaults())
+                .build();
+    }
+
 }
