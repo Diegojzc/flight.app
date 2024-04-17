@@ -19,7 +19,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -52,7 +51,7 @@ public class ResourceApiController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResourceIdDTO> createREsource(
+    public ResponseEntity<ResourceIdDTO> createResource(
             @RequestPart("description")ResourceCreateRequestDTO resourceCreateRequestDTO,
             @RequestPart("content")MultipartFile multipartFile){
         ResourceIdDTO resourceIdDTO = storeService
