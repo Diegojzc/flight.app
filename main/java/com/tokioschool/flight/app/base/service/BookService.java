@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-
 @Service
 @RequiredArgsConstructor
 public class BookService {
@@ -62,29 +61,24 @@ public BookDTO getBookByBookId(int bookId){
     return toBookDTO(getBookById(bookId));
 }
 
-  public PageDTO<BookDTO> searchBooksByPageIdAndPageSize(
-      BookSearchRequestDTO bookSearchRequestDTO) {
-    List<Book> filtererBooks =
-        Optional.ofNullable(StringUtils.trimToNull(bookSearchRequestDTO.getGenre()))
+public PageDTO<BookDTO> searchBooksByPageIdAndPageSize(BookSearchRequestDTO bookSearchRequestDTO){
+    List<Book> filtererBooks= Optional.ofNullable(StringUtils.trimToNull(bookSearchRequestDTO.getGenre()))
             .map(String::toLowerCase)
-            .map(
-                genre ->
-                    books.stream()
-                        .filter(book -> book.getGenre().toLowerCase().contains(genre))
-                        .toList())
+            .map(genre->books.stream().filter(book->book.getGenre().toLowerCase().contains(genre))
+                    .toList())
             .orElse(books);
 
     int start = bookSearchRequestDTO.getPage() * bookSearchRequestDTO.getPageSize();
 
-    if (start >= filtererBooks.size()) {
-      return PageDTO.<BookDTO>builder()
-          .items(List.of())
-          .page(bookSearchRequestDTO.getPage())
-          .pageSize(bookSearchRequestDTO.getPageSize())
-          .total(filtererBooks.size())
-          .build();
+    if(start >= filtererBooks.size()){
+        return PageDTO.<BookDTO>builder()
+                        .items(List.of())
+                .page(bookSearchRequestDTO.getPage())
+                .pageSize(bookSearchRequestDTO.getPageSize())
+                        .total(filtererBooks.size())
+
+                build()
     }
-      return null;
-  }
+}
 
 }
