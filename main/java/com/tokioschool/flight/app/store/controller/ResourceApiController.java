@@ -5,7 +5,7 @@ import com.tokioschool.flight.app.core.exception.NotFoundException;
 import com.tokioschool.flight.app.store.dto.ResourceContentDTO;
 import com.tokioschool.flight.app.store.dto.ResourceCreateRequestDTO;
 import com.tokioschool.flight.app.store.dto.ResourceIdDTO;
-import com.tokioschool.flight.app.store.service.StoreService;
+import com.tokioschool.flight.app.store.StoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

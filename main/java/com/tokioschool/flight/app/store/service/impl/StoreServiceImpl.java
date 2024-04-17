@@ -6,7 +6,7 @@ import com.tokioschool.flight.app.store.domain.ResourceDescription;
 import com.tokioschool.flight.app.store.dto.ResourceContentDTO;
 
 import com.tokioschool.flight.app.store.dto.ResourceIdDTO;
-import com.tokioschool.flight.app.store.service.StoreService;
+import com.tokioschool.flight.app.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

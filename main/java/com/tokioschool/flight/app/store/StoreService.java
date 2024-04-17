@@ -1,4 +1,4 @@
-package com.tokioschool.flight.app.store.service;
+package com.tokioschool.flight.app.store;
 
 import com.tokioschool.flight.app.store.dto.ResourceContentDTO;
 import com.tokioschool.flight.app.store.dto.ResourceIdDTO;
